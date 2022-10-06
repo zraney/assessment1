@@ -19,7 +19,7 @@ type question struct {
 	Author   string `JSON : "author"`
 }
 
-func getRandomQuestion(c gin.Context) {
+func getRandomQuestion(c *gin.Context) {
 	keyArray := []string{}
 	for k := range questions {
 		keyArray = append(keyArray, k)
