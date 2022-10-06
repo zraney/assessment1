@@ -1,6 +1,11 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"math/rand"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	r := gin.Default()
@@ -15,7 +20,15 @@ type question struct {
 }
 
 func getRandomQuestion(c gin.Context) {
+	keyArray := []string{}
+	for k := range questions {
+		keyArray = append(keyArray, k)
+	}
+	randomIndex := rand.Intn(len(keyArray))
+	randomPick := keyArray[randomIndex]
+	randomQuestion := questions[randomPick]
 
+	c.JSON(http.StatusOK, randomQuestion)
 }
 
 var questions = map[string]question{
