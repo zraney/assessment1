@@ -10,6 +10,7 @@ import (
 func main() {
 	r := gin.Default()
 	r.GET("/qotd/random", getRandomQuestion)
+	r.GET("/qotd/:id", getQuestionByID)
 	r.Run("0.0.0.0:8080")
 }
 
@@ -29,6 +30,18 @@ func getRandomQuestion(c *gin.Context) {
 	randomQuestion := questions[randomPick]
 
 	c.JSON(http.StatusOK, randomQuestion)
+}
+
+func getQuestionByID(c *gin.Context) {
+	id := c.Param("id")
+
+	question, exists := questions[id]
+
+	if exists {
+		c.JSON(http.StatusOK, question)
+		return
+	}
+	c.JSON(http.StatusNotFound, "question not found")
 }
 
 var questions = map[string]question{
