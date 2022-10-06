@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func main() {
@@ -12,6 +13,7 @@ func main() {
 	r.GET("/qotd/random", getRandomQuestion)
 	r.GET("/qotd/:id", getQuestionByID)
 	r.GET("/qotd/all", getAllQuestions)
+	r.POST("/qotd", addNewQuestion)
 	r.Run("0.0.0.0:8080")
 }
 
@@ -48,6 +50,19 @@ func getQuestionByID(c *gin.Context) {
 func getAllQuestions(c *gin.Context) {
 
 	c.JSON(http.StatusOK, questions)
+}
+
+func addNewQuestion(c *gin.Context) {
+	newID := uuid.New().String()
+	var newQuestion question
+	newQuestion.ID = newID
+
+	if err := c.BindJSON(&newQuestion); err != nil {
+		return
+	}
+	questions[newID] = newQuestion
+	c.JSON(http.StatusCreated, newQuestion)
+
 }
 
 var questions = map[string]question{
