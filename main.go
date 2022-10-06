@@ -11,6 +11,7 @@ func main() {
 	r := gin.Default()
 	r.GET("/qotd/random", getRandomQuestion)
 	r.GET("/qotd/:id", getQuestionByID)
+	r.GET("/qotd/all", getAllQuestions)
 	r.Run("0.0.0.0:8080")
 }
 
@@ -42,6 +43,11 @@ func getQuestionByID(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusNotFound, "question not found")
+}
+
+func getAllQuestions(c *gin.Context) {
+
+	c.JSON(http.StatusOK, questions)
 }
 
 var questions = map[string]question{
